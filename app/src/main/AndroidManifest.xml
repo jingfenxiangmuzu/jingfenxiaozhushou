@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.jingfenxiaozhushou">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <uses-feature
+                android:name="android.hardware.camera2"
+                android:required="true" />
+        </activity>
+
+        <activity android:name=".UserView"
+            android:label="UserView">
+            <intent-filter>
+                <action android:name="com.example.jingfenxiaozhushou.UserView"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".DataBaseSystem"
+            android:label="DataBaseSystem">
+            <intent-filter>
+                <action android:name="com.example.jingfenxiaozhushou.DataBaseSystem"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".VideoSystem"
+            android:label="VideoSystem">
+            <intent-filter>
+                <action android:name="com.example.jingfenxiaozhushou.VideoSystem"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Camera"
+            android:label="Camera">
+            <intent-filter>
+                <action android:name="com.example.jingfenxiaozhushou.Camera"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name=".history"
+            android:label="history">
+            <intent-filter>
+                <action android:name="com.example.jingfenxiaozhushou.history"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".detail">
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+
+</manifest>
