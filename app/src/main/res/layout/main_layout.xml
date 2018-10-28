@@ -8,25 +8,29 @@
         android:id="@+id/button_importNewVideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="importNewVideo"/>
+        android:text="importNewVideo"
+        android:textAllCaps="false"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_checkReport"
-        android:text="checkReport"/>
+        android:text="checkReport"
+        android:textAllCaps="false"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_shotNewVideo"
-        android:text="shotNewVideo"/>
+        android:text="shotNewVideo"
+        android:textAllCaps="false"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_history"
-        android:text="history"/>
+        android:text="history"
+        android:textAllCaps="false"/>
 
     <ImageView
         android:layout_width="wrap_content"
