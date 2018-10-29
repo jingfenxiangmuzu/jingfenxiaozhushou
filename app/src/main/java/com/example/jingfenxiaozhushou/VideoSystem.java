@@ -35,6 +35,7 @@ public class VideoSystem extends AppCompatActivity{
             }
         });
         Button pick = (Button) findViewById(R.id.pick);
+        getPermission();
         pick.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -45,7 +46,7 @@ public class VideoSystem extends AppCompatActivity{
             }
         });
 
-        getPermission();
+
     }
 
     private void getPermission() {

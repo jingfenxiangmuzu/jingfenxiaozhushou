@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+
     <TextView
         android:text="camera
         在这个活动中调用摄像头拍摄视频然后调用图像分析方法进行图像分析"
@@ -15,18 +16,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/back"/>
     <Button
+        android:text="start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="reconverIntent"
-        android:text="启动系统视频录制视频"
-        android:textAllCaps="false" />
-    ---------------------
-    作者：Linkin_Jun
-    来源：CSDN
-    原文：https://blog.csdn.net/Android_Technology/article/details/69388902
-    版权声明：本文为博主原创文章，转载请附上博文链接！
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:onClick="start"/>
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent">
+        <VideoView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/video_view"/>
+    </RelativeLayout>
+
+
 </LinearLayout>
