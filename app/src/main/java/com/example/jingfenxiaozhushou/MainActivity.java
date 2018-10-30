@@ -124,16 +124,22 @@ public class MainActivity extends AppCompatActivity {
 
         whichActivity="";
     }
-    //数据库插入操作
+    /*
+    * 数据库插入操作，一共需要插入四个数据
+    * time 时间，rateOfSurvival成活率，deformityRate畸形率，density密度
+    * 自动生成一个id作为主键
+     * */
     private MyDatabaseHelper dbHelper;
-    protected void insert_report(String name, double live_rate){
+    protected void insert_report(double time, double deformityRate, double density, double rateOfSurvival){
         dbHelper = new MyDatabaseHelper(this,"Reports.bd",null,1);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         //组建一组数据
-        values.put("name",name);
-        values.put("live_rate",live_rate);
-        db.insert("Book",null,values);
+        values.put("time",time);
+        values.put("deformityRate",deformityRate);
+        values.put("density",density);
+        values.put("rateOfSurvival",rateOfSurvival);
+        db.insert("Report",null,values);
         values.clear();
 
     }

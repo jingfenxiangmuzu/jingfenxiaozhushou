@@ -1,5 +1,6 @@
 package com.example.jingfenxiaozhushou;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -29,6 +30,9 @@ public class DataBaseSystem extends AppCompatActivity {
             }
         });
         Button queryButton = (Button) findViewById(R.id.query_data);
+        /*
+        * 数据库查询功能，目前是遍历表并且打印
+        * */
         queryButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -38,12 +42,30 @@ public class DataBaseSystem extends AppCompatActivity {
                 if(cursor.moveToFirst()){
                     do{
                         //遍历Cursor对象，取出数据并打印
-                        String name = cursor.getString(cursor.getColumnIndex("name"));
-                        double live_rate = cursor.getDouble(cursor.getColumnIndex("live_rate"));
-                        Log.d("MainActivity", "report name is " + name);
-                        Log.d("MainActivity", "report live rate is " + live_rate);
+                        int id = cursor.getInt(cursor.getColumnIndex("id"));
+                        double time = cursor.getDouble(cursor.getColumnIndex("time"));
+                        double deformityRate = cursor.getDouble(cursor.getColumnIndex("deformityRate"));
+                        double density = cursor.getDouble(cursor.getColumnIndex("density"));
+                        double rateOfSurvival = cursor.getDouble(cursor.getColumnIndex("rateOfSurvival"));
+                        Log.d("MainActivity", "report id is " + id);
+                        Log.d("MainActivity", "report time is " + time);
+                        Log.d("MainActivity", "report deformityRate is " + deformityRate);
+                        Log.d("MainActivity", "report density is " + density);
+                        Log.d("MainActivity", "report rateOfSurvival is " + rateOfSurvival);
                     }while(cursor.moveToNext());
                 }
+            }
+        });
+
+        Button insertTest = (Button)findViewById(R.id.insertTest);
+        insertTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double time = Math.random()*100;
+                double deformityRate = Math.random();
+                double density = Math.random();
+                double rateOfSurvival = Math.random();
+                insert_report(time,deformityRate,density,rateOfSurvival);
             }
         });
         //结束该活动回到control类然后重启uesrview
@@ -54,5 +76,18 @@ public class DataBaseSystem extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    protected void insert_report(double time, double deformityRate, double density, double rateOfSurvival){
+        dbHelper = new MyDatabaseHelper(this,"Reports.bd",null,1);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        //组建一组数据
+        values.put("time",time);
+        values.put("deformityRate",deformityRate);
+        values.put("density",density);
+        values.put("rateOfSurvival",rateOfSurvival);
+        db.insert("Report",null,values);
+        values.clear();
+
     }
 }

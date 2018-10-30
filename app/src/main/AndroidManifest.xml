@@ -52,16 +52,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".GetCamera"
-            android:label="Camera">
-            <intent-filter>
-                <action android:name="com.example.jingfenxiaozhushou.GetCamera"></action>
-                <category android:name="android.intent.category.DEFAULT"></category>
-            </intent-filter>
-
-
-        </activity>
-
 
         <activity android:name=".history"
             android:label="history">

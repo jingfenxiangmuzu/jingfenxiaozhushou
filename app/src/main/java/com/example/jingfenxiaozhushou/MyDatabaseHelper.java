@@ -11,9 +11,12 @@ import android.widget.Toast;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_REPORT = "create table Report("
-            +"id integer primary key autoincrement,"
-            +"name text,"
-            +"live_rate real)";
+            +"id integer primary key autoincrement,"//主键
+            //+"name text,"//暂时不需要名字
+            +"time real,"//时间
+            +"deformityRate real,"//畸形率
+            +"density real,"//密度
+            +"rateOfSurvival real)";//存活率
     private Context mContext;
 
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
