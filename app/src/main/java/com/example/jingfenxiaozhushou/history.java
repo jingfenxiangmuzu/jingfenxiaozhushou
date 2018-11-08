@@ -1,6 +1,5 @@
 package com.example.jingfenxiaozhushou;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +21,7 @@ public class history extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(history.this, android.R.layout.simple_list_item_1, data);
+
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
 

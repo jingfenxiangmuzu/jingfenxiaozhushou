@@ -1,13 +1,15 @@
 package com.example.jingfenxiaozhushou;
 
-import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Asus on 2018/4/24.
@@ -16,12 +18,39 @@ import android.widget.Button;
 public class DataBaseSystem extends AppCompatActivity {
 
     private MyDatabaseHelper dbHelper;
-
+    String[] ids;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.databasesystem_layout);
         dbHelper = new MyDatabaseHelper(this,"Reports.db",null,1);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ids=dbHelper.showMyData(db);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(DataBaseSystem.this, android.R.layout.simple_list_item_1);
+        for(int i=0;i<ids.length;i++){
+            adapter.add(ids[i]);
+        }
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                Report report = dbHelper.findReportById(db,Integer.parseInt(ids[i]));
+                Toast.makeText(DataBaseSystem.this, "你点击的是" + i, Toast.LENGTH_SHORT).show();
+                TextView textView_time = (TextView) findViewById(R.id.time);
+                TextView textView_deformityRate = (TextView) findViewById(R.id.deformityRate);
+                TextView textView_density = (TextView) findViewById(R.id.density);
+                TextView textView_rateOfSurvival = (TextView) findViewById(R.id.rateOfSurvival);
+                textView_time.setText("time:"+String.valueOf(report.getTime()));
+                textView_deformityRate.setText("deformityRate:"+String.valueOf(report.getDeformityRate()));
+                textView_density.setText("density"+String.valueOf(report.getDensity()));
+                textView_rateOfSurvival.setText("rateOfSurvival"+String.valueOf(report.rateOfSurvival));
+            }
+        });
+
         Button createDatebase = (Button) findViewById(R.id.create_datebase);
         createDatebase.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -37,25 +66,12 @@ public class DataBaseSystem extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-                //查询Report表中所有的数据
-                Cursor cursor = db.query("Report",null,null,null,null,null,null);
-                if(cursor.moveToFirst()){
-                    do{
-                        //遍历Cursor对象，取出数据并打印
-                        int id = cursor.getInt(cursor.getColumnIndex("id"));
-                        double time = cursor.getDouble(cursor.getColumnIndex("time"));
-                        double deformityRate = cursor.getDouble(cursor.getColumnIndex("deformityRate"));
-                        double density = cursor.getDouble(cursor.getColumnIndex("density"));
-                        double rateOfSurvival = cursor.getDouble(cursor.getColumnIndex("rateOfSurvival"));
-                        Log.d("MainActivity", "report id is " + id);
-                        Log.d("MainActivity", "report time is " + time);
-                        Log.d("MainActivity", "report deformityRate is " + deformityRate);
-                        Log.d("MainActivity", "report density is " + density);
-                        Log.d("MainActivity", "report rateOfSurvival is " + rateOfSurvival);
-                    }while(cursor.moveToNext());
-                }
+
             }
         });
+/**
+ * 测试用于添加新的记录
+ */
 
         Button insertTest = (Button)findViewById(R.id.insertTest);
         insertTest.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +81,9 @@ public class DataBaseSystem extends AppCompatActivity {
                 double deformityRate = Math.random();
                 double density = Math.random();
                 double rateOfSurvival = Math.random();
-                insert_report(time,deformityRate,density,rateOfSurvival);
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                dbHelper.insert_report(db,time,deformityRate,density,rateOfSurvival);
+
             }
         });
         //结束该活动回到control类然后重启uesrview
@@ -77,17 +95,7 @@ public class DataBaseSystem extends AppCompatActivity {
             }
         });
     }
-    protected void insert_report(double time, double deformityRate, double density, double rateOfSurvival){
-        dbHelper = new MyDatabaseHelper(this,"Reports.bd",null,1);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        //组建一组数据
-        values.put("time",time);
-        values.put("deformityRate",deformityRate);
-        values.put("density",density);
-        values.put("rateOfSurvival",rateOfSurvival);
-        db.insert("Report",null,values);
-        values.clear();
 
-    }
+
+
 }
