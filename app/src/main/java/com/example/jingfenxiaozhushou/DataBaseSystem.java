@@ -1,7 +1,12 @@
 package com.example.jingfenxiaozhushou;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,18 +24,22 @@ public class DataBaseSystem extends AppCompatActivity {
 
     private MyDatabaseHelper dbHelper;
     String[] ids;
+    AlertDialog dialog;
+    ArrayAdapter<String> adapter;
+    ListView listView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.databasesystem_layout);
         dbHelper = new MyDatabaseHelper(this,"Reports.db",null,1);
+
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ids=dbHelper.showMyData(db);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(DataBaseSystem.this, android.R.layout.simple_list_item_1);
+        adapter = new ArrayAdapter<String>(DataBaseSystem.this, android.R.layout.simple_list_item_1);
         for(int i=0;i<ids.length;i++){
             adapter.add(ids[i]);
         }
-        ListView listView = (ListView) findViewById(R.id.list_view);
+        listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -51,6 +60,41 @@ public class DataBaseSystem extends AppCompatActivity {
             }
         });
 
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, final View view, int i, long l) {
+                final String itemtodelete = ids[i];
+                dialog=new AlertDialog.Builder(DataBaseSystem.this)
+                        .setTitle("confirm to delete?")
+                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                dbHelper.deleteById(db,Integer.valueOf(itemtodelete));
+                                ids=dbHelper.showMyData(db);
+
+                                adapter = new ArrayAdapter<String>(DataBaseSystem.this, android.R.layout.simple_list_item_1);
+                                for(int k=0;k<ids.length;k++){
+                                    adapter.add(ids[k]);
+                                }
+
+                                listView.setAdapter(adapter);
+                                dialog.dismiss();
+                            }
+                        })
+                        .create();
+                dialog.show();
+                return false;
+            }
+        });
         Button createDatebase = (Button) findViewById(R.id.create_datebase);
         createDatebase.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -83,7 +127,12 @@ public class DataBaseSystem extends AppCompatActivity {
                 double rateOfSurvival = Math.random();
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 dbHelper.insert_report(db,time,deformityRate,density,rateOfSurvival);
-
+                ids=dbHelper.showMyData(db);
+                adapter = new ArrayAdapter<String>(DataBaseSystem.this, android.R.layout.simple_list_item_1);
+                for(int k=0;k<ids.length;k++){
+                    adapter.add(ids[k]);
+                }
+                listView.setAdapter(adapter);
             }
         });
         //结束该活动回到control类然后重启uesrview
